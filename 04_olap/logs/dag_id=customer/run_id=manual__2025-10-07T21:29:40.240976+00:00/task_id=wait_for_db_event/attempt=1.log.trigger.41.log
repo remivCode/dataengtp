@@ -1,0 +1,2 @@
+{"timestamp":"2025-10-07T21:29:42.892575Z","level":"info","event":"trigger customer/manual__2025-10-07T21:29:40.240976+00:00/wait_for_db_event/-1/1 (ID 13) starting","filename":"triggerer_job_runner.py","lineno":1104}
+{"timestamp":"2025-10-07T21:34:11.761152Z","level":"info","event":"trigger completed","name":"customer/manual__2025-10-07T21:29:40.240976+00:00/wait_for_db_event/-1/1 (ID 13)","filename":"triggerer_job_runner.py","lineno":1128}
