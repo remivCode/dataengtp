@@ -377,8 +377,10 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
-      - "5050:80" # type localhost:5050 to your browser to access the UI
-
-
-volumes:
-  postgres-db-volume:
+      - "${PGADMIN_PORT}:80" # type localhost:5050 to your browser to access the UI
+    networks:
+      - Practice
+      
+networks:
+  Practice:
+    name: olap_network
