@@ -1,5 +1,6 @@
 import asyncio
 import asyncpg
+import json
 from airflow.triggers.base import BaseTrigger, TriggerEvent
 
 class PostgresNotifyTrigger(BaseTrigger):
@@ -24,4 +25,7 @@ class PostgresNotifyTrigger(BaseTrigger):
         yield TriggerEvent(self.event)
 
     def _on_notify(self, connection, pid, channel, payload):
-        self.event = {"payload": payload}
+        try:
+            self.event = json.loads(payload)
+        except json.JSONDecodeError:
+            self.event = {"payload": payload}

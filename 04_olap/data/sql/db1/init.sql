@@ -199,20 +199,24 @@ RETURNS trigger AS $$
 DECLARE
     payload TEXT;
 BEGIN
-    IF TG_OP = 'INSERT' THEN
-        payload := 'insert';
-    ELSIF TG_OP = 'UPDATE' THEN
-        payload := 'update';
-    ELSIF TG_OP = 'DELETE' THEN
-        payload := 'delete';
+    IF TG_OP = 'DELETE' THEN
+        payload := json_build_object(
+            'op', TG_OP,
+            'data', row_to_json(OLD)
+        );
+    ELSE
+        payload := json_build_object(
+            'op', TG_OP,
+            'data', row_to_json(NEW)
+        );
     END IF;
 
-    PERFORM pg_notify('airflow_event', payload);
+    PERFORM pg_notify('airflow_event', payload::text);
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER on_table_change
-AFTER INSERT OR UPDATE ON Customers
+AFTER INSERT OR UPDATE OR DELETE ON Customers
 FOR EACH ROW
 EXECUTE FUNCTION notify_airflow();
